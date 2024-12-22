@@ -58,6 +58,21 @@
         .form-group button:hover {
             background-color: #218838;
         }
+        .valor-gasto {
+            background-color: #fff5e6;
+            font-size: 16px;
+            border: 2px solid #ffc107;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+        }
+        .valor-gasto input {
+            font-size: 18px;
+            width: auto;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
         .success-message {
             display: none;
             color: #28a745;
@@ -114,6 +129,12 @@
                 <select id="subcategoria" name="Subcategoria" required>
                     <option value="">Selecione...</option>
                 </select>
+            </div>
+            <div class="form-group" id="subsubcategoria-container"></div>
+            <div class="form-group" id="opcoesAdicionais"></div>
+            <div class="form-group valor-gasto">
+                <label for="valor">Gasto</label>
+                <input type="number" id="valor" name="Valor" placeholder="--,-- €" min="0.01" step="0.01" required>
             </div>
             <div class="form-group" id="subsubcategoria-container"></div>
             <div class="form-group" id="opcoesAdicionais"></div>
@@ -204,12 +225,10 @@
                     button.type = "button";
                     button.classList.add("subsubcategoria-btn");
                     button.textContent = value;
-
-                    button.addEventListener("click", function () {
+                    button.addEventListener("click", () => {
                         document.querySelectorAll(".subsubcategoria-btn").forEach(btn => btn.classList.remove("selected"));
                         button.classList.add("selected");
                     });
-
                     buttonGroup.appendChild(button);
                 });
                 subsubcategoriaContainer.appendChild(buttonGroup);
@@ -222,32 +241,34 @@
             opcoesAdicionais.innerHTML = ""; // Limpar campos adicionais
             const campos = dadosGastos.categorias[categoriaKey]?.subcategorias[subcategoriaKey]?.camposAdicionais || [];
             campos.forEach(campo => {
-                const campoDiv = document.createElement("div");
-                campoDiv.classList.add("form-group");
-                campoDiv.innerHTML = `
-                    <label for="${campo}">${campo}</label>
-                    <input type="text" id="${campo}" name="${campo}" placeholder="Digite ${campo.toLowerCase()}">
+                opcoesAdicionais.innerHTML += `
+                    <div class="form-group">
+                        <label for="${campo}">${campo}</label>
+                        <input type="text" id="${campo}" name="${campo}" placeholder="Digite o valor">
+                    </div>
                 `;
-                opcoesAdicionais.appendChild(campoDiv);
             });
         }
 
-        // Preenche as categorias e subcategorias ao carregar a página
+        // Evento para selecionar a categoria
+        document.getElementById("categoria").addEventListener("change", function () {
+            const categoriaKey = this.value;
+            preencherSubcategorias(categoriaKey);
+            document.getElementById("subsubcategoria-container").innerHTML = ""; // Limpar sub-subcategorias
+            document.getElementById("opcoesAdicionais").innerHTML = ""; // Limpar campos adicionais
+        });
+
+        // Evento para selecionar a subcategoria
+        document.getElementById("subcategoria").addEventListener("change", function () {
+            const categoriaKey = document.getElementById("categoria").value;
+            const subcategoriaKey = this.value;
+            mostrarSubsubcategorias(categoriaKey, subcategoriaKey);
+            mostrarCamposAdicionais(categoriaKey, subcategoriaKey);
+        });
+
+        // Inicializa a categoria e subcategoria com o primeiro valor
         document.addEventListener("DOMContentLoaded", function () {
             preencherCategorias();
-            document.getElementById("categoria").addEventListener("change", function () {
-                const categoriaKey = this.value;
-                preencherSubcategorias(categoriaKey);
-                document.getElementById("subsubcategoria-container").innerHTML = ""; // Limpar subsubcategorias
-                document.getElementById("opcoesAdicionais").innerHTML = ""; // Limpar campos adicionais
-            });
-
-            document.getElementById("subcategoria").addEventListener("change", function () {
-                const categoriaKey = document.getElementById("categoria").value;
-                const subcategoriaKey = this.value;
-                mostrarSubsubcategorias(categoriaKey, subcategoriaKey);
-                mostrarCamposAdicionais(categoriaKey, subcategoriaKey);
-            });
         });
     </script>
 </body>
