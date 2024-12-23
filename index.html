@@ -236,7 +236,14 @@
                 }
             }
         };
-
+        // Função para definir a data atual no campo de data
+        document.addEventListener("DOMContentLoaded", function () {
+            const dataInput = document.getElementById("data");
+            const hoje = new Date();
+            const dataFormatada = hoje.toISOString().split("T")[0]; // Formato YYYY-MM-DD
+            dataInput.value = dataFormatada;
+        });
+        
         // Função para preencher as opções de categorias
         function preencherCategorias() {
             const categoriaSelect = document.getElementById("categoria");
