@@ -179,15 +179,146 @@
                     <option value="">Selecione...</option>
                 </select>
             </div>
+            <div class="form-group" id="subsubcategoria-container"></div>
+            <div class="form-group" id="opcoesAdicionais"></div>
             <div class="form-group valor-gasto">
-                <label for="valor">Valor (€)</label>
-                <input type="number" id="valor" name="Valor" placeholder="0000,00" min="0.01" step="0.01" required>
+                <label for="valor">Gasto</label>
+                <input type="number" id="valor"name="Valor"placeholder="0000,00 €"min="0.01" step="0.01" required>
             </div>
+            <div class="form-group" id="subsubcategoria-container"></div>
+            <div class="form-group" id="opcoesAdicionais"></div>
             <div class="form-group">
                 <button type="submit">Registrar</button>
             </div>
         </form>
         <div class="success-message" id="successMessage">Gasto registrado com sucesso!</div>
     </div>
+
+    <script>
+        // Estrutura de dados: categorias, subcategorias, sub-subcategorias e campos adicionais
+        const dadosGastos = {
+            categorias: {
+                "1": {
+                    name: "Alimentação",
+                    subcategorias: {
+                        "1.1": { name: "Supermercado", camposAdicionais: ["Quilômetros Atuais", "Litros Abastecidos"] },
+                        "1.2": {
+                            name: "Restaurante", 
+                            subsubcategorias: {
+                                "1.2.1": "Almoço",
+                                "1.2.2": "Jantar",
+                                "1.2.3": "Lanche"
+                            }
+                        },
+                        "1.3": { name: "Suplementação" }
+                    }
+                },
+                "2": {
+                    name: "Saúde",
+                    subcategorias: {
+                        "2.1": { name: "Consulta", camposAdicionais: ["Quilômetros Atuais"] },
+                        "2.2": { name: "Exames", camposAdicionais: ["Descrição do Exame"] },
+                        "2.3": { name: "Medicamentos" }
+                    }
+                },
+                "3": {
+                    name: "Desporto",
+                    subcategorias: {
+                        "3.1": { name: "Ginásio" },
+                        "3.2": {
+                            name: "Equipamento",
+                            subsubcategorias: {
+                                "3.2.1": "Vestuário",
+                                "3.2.2": "Acessórios"
+                            }
+                        }
+                    }
+                }
+            }
+        };
+
+        // Função para preencher as opções de categorias
+        function preencherCategorias() {
+            const categoriaSelect = document.getElementById("categoria");
+            Object.keys(dadosGastos.categorias).forEach(categoriaKey => {
+                const option = document.createElement("option");
+                option.value = categoriaKey;
+                option.textContent = dadosGastos.categorias[categoriaKey].name;
+                categoriaSelect.appendChild(option);
+            });
+        }
+
+        // Função para preencher as opções de subcategorias
+        function preencherSubcategorias(categoriaKey) {
+            const subcategoriaSelect = document.getElementById("subcategoria");
+            subcategoriaSelect.innerHTML = `<option value="">Selecione...</option>`;
+            const subcategorias = dadosGastos.categorias[categoriaKey]?.subcategorias || {};
+            Object.keys(subcategorias).forEach(subcategoriaKey => {
+                const option = document.createElement("option");
+                option.value = subcategoriaKey;
+                option.textContent = subcategorias[subcategoriaKey].name;
+                subcategoriaSelect.appendChild(option);
+            });
+        }
+
+        // Função para mostrar as sub-subcategorias
+        function mostrarSubsubcategorias(categoriaKey, subcategoriaKey) {
+            const subsubcategoriaContainer = document.getElementById("subsubcategoria-container");
+            subsubcategoriaContainer.innerHTML = ""; // Limpar área anterior
+            const subsubcategorias = dadosGastos.categorias[categoriaKey]?.subcategorias[subcategoriaKey]?.subsubcategorias || {};
+            if (Object.keys(subsubcategorias).length > 0) {
+                const buttonGroup = document.createElement("div");
+                buttonGroup.classList.add("button-group");
+                Object.entries(subsubcategorias).forEach(([key, value]) => {
+                    const button = document.createElement("button");
+                    button.type = "button";
+                    button.classList.add("subsubcategoria-btn");
+                    button.textContent = value;
+                    button.addEventListener("click", () => {
+                        document.querySelectorAll(".subsubcategoria-btn").forEach(btn => btn.classList.remove("selected"));
+                        button.classList.add("selected");
+                    });
+                    buttonGroup.appendChild(button);
+                });
+                subsubcategoriaContainer.appendChild(buttonGroup);
+            }
+        }
+
+        // Função para mostrar campos adicionais
+        function mostrarCamposAdicionais(categoriaKey, subcategoriaKey) {
+            const opcoesAdicionais = document.getElementById("opcoesAdicionais");
+            opcoesAdicionais.innerHTML = ""; // Limpar campos adicionais
+            const campos = dadosGastos.categorias[categoriaKey]?.subcategorias[subcategoriaKey]?.camposAdicionais || [];
+            campos.forEach(campo => {
+                opcoesAdicionais.innerHTML += `
+                    <div class="form-group">
+                        <label for="${campo}">${campo}</label>
+                        <input type="text" id="${campo}" name="${campo}" placeholder="Digite o valor">
+                    </div>
+                `;
+            });
+        }
+
+        // Evento para selecionar a categoria
+        document.getElementById("categoria").addEventListener("change", function () {
+            const categoriaKey = this.value;
+            preencherSubcategorias(categoriaKey);
+            document.getElementById("subsubcategoria-container").innerHTML = ""; // Limpar sub-subcategorias
+            document.getElementById("opcoesAdicionais").innerHTML = ""; // Limpar campos adicionais
+        });
+
+        // Evento para selecionar a subcategoria
+        document.getElementById("subcategoria").addEventListener("change", function () {
+            const categoriaKey = document.getElementById("categoria").value;
+            const subcategoriaKey = this.value;
+            mostrarSubsubcategorias(categoriaKey, subcategoriaKey);
+            mostrarCamposAdicionais(categoriaKey, subcategoriaKey);
+        });
+
+        // Inicializa a categoria e subcategoria com o primeiro valor
+        document.addEventListener("DOMContentLoaded", function () {
+            preencherCategorias();
+        });
+    </script>
 </body>
 </html>
