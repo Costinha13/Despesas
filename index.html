@@ -71,13 +71,15 @@
         .form-group button {
             background-color: #007aff;
             color: #ffffff;
+            display: block; 
             border: none;
             border-radius: 8px;
             padding: 12px;
             font-size: 16px;
             cursor: pointer;
-            width: 100%;
+            width: 60%;
             transition: background-color 0.3s;
+            margin: 20px auto;  
         }
 
         .form-group button:hover {
@@ -218,7 +220,15 @@
                     subcategorias: {
                         "2.1": { name: "Consulta", camposAdicionais: ["Especialidade", "Observações"] },
                         "2.2": { name: "Exames", camposAdicionais: ["Descrição do Exame"] },
-                        "2.3": { name: "Medicamentos", camposAdicionais: ["Descrição dos medicamentos"] }
+                        "2.3": { name: "Medicamentos", camposAdicionais: ["Descrição dos medicamentos"] },
+                        "2.4": {name: "Oftalmologia",
+                            subsubcategorias: {
+                                "2.4.1": "Lentes",
+                                "2.4.2": "Óculos",
+                                "2.4.3": "Outros"
+                            }
+                        },
+                        "2.5": { name: "Nutricionista"}
                     }
                 },
                 "3": {name: "Desporto",
@@ -230,9 +240,24 @@
                                 "3.2.1": "Vestuário",
                                 "3.2.2": "Acessórios"
                             }
+                        },
+                        "3.3":{name: "Calçado",
+                        subsubcategorias:{
+                            "3.3.1": "Futebol",
+                            "3.3.2": "Futsal",
+                            "3.3.3": "Desporto geral"
+                            }   
+                        },
+                        "3.4":{name: "Padel",
+                        subsubcategorias:{
+                           "3.4.1": "Aluguer de campo",
+                           "3.4.2": "Raquete",
+                           "3.4.3": "Acessórios"
+                        }
                         }
                     }
-                },"4": {
+                },
+                "4": {
             name: "Vestuário",
             subcategorias: {
                 "4.1": { name: "Camisola" },
@@ -369,6 +394,15 @@
                 "10.4": { name: "3D Printing", camposAdicionais: ["Descrição"]  },
                 "10.5": { name: "Outro", camposAdicionais: ["Descrição"]  }
             }
+        },
+        "11": {
+            name: "Jogo",
+            subcategorias: {
+                "11.1": { name: "Raspadinha"  },
+                "11.2": { name: "Euromilhões"  },
+                "11.3": { name: "Apostas"  },
+                "12.4": { name: "Outro" }
+            }
         }
             }
         };
@@ -466,9 +500,15 @@
     event.preventDefault(); // Evita o reload da página ao submeter o formulário
 
     const data = document.getElementById("data").value;
-    const categoria = document.getElementById("categoria").value;
-    const subcategoria = document.getElementById("subcategoria").value;
+    // Captura o texto do nome da categoria selecionada
+    const categoriaSelect = document.getElementById("categoria");
+    const categoriaNome = categoriaSelect.options[categoriaSelect.selectedIndex].textContent;
 
+    // Captura o texto do nome da subcategoria selecionada
+    const subcategoriaSelect = document.getElementById("subcategoria");
+    const subcategoriaNome = subcategoriaSelect.options[subcategoriaSelect.selectedIndex]
+        ? subcategoriaSelect.options[subcategoriaSelect.selectedIndex].textContent
+        : "";
     // Sub-subcategoria (botão selecionado)
     const subsubcategoriaBtn = document.querySelector(".subsubcategoria-btn.selected");
     const subsubcategoria = subsubcategoriaBtn ? subsubcategoriaBtn.textContent : "";
@@ -486,8 +526,8 @@
     // Montar os dados para envio
     const dados = {
         Data: data,
-        Categoria: categoria,
-        Subcategoria: subcategoria,
+        Categoria: categoriaNome,
+        Subcategoria: subcategoriaNome,
         Subsubcategoria: subsubcategoria,
         Valor: valor,
         ...camposAdicionais // Adiciona cada campo adicional separadamente
