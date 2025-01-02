@@ -161,7 +161,7 @@
 </head>
 <body>
     <div class="form-container">
-        <h2>Registro de Gastos</h2>
+        <h2>Registo de Gastos</h2>
         <form id="gastosForm">
             <div class="form-group">
                 <label for="data">Data</label>
@@ -188,7 +188,7 @@
             <div class="form-group" id="subsubcategoria-container"></div>
             <div class="form-group" id="opcoesAdicionais"></div>
             <div class="form-group">
-                <button type="submit">Registrar</button>
+                <button type="submit">Efectuar registo</button>
             </div>
         </form>
         <div class="success-message" id="successMessage">Gasto registrado com sucesso!</div>
@@ -201,7 +201,7 @@
                 "1": {
                     name: "Alimentação",
                     subcategorias: {
-                        "1.1": { name: "Supermercado", camposAdicionais: ["Quilômetros Atuais", "Litros Abastecidos"] },
+                        "1.1": { name: "Supermercado", camposAdicionais: ["Descrição"] },
                         "1.2": {
                             name: "Restaurante", 
                             subsubcategorias: {
@@ -216,17 +216,16 @@
                 "2": {
                     name: "Saúde",
                     subcategorias: {
-                        "2.1": { name: "Consulta", camposAdicionais: ["Quilômetros Atuais"] },
+                        "2.1": { name: "Consulta", camposAdicionais: ["Especialidade", "Observações"] },
                         "2.2": { name: "Exames", camposAdicionais: ["Descrição do Exame"] },
-                        "2.3": { name: "Medicamentos" }
+                        "2.3": { name: "Medicamentos", camposAdicionais: ["Descrição dos medicamentos"] }
                     }
                 },
-                "3": {
-                    name: "Desporto",
+                "3": {name: "Desporto",
                     subcategorias: {
                         "3.1": { name: "Ginásio" },
                         "3.2": {
-                            name: "Equipamento",
+                            name: "Equipamento",camposAdicionais: ["Descrição"],
                             subsubcategorias: {
                                 "3.2.1": "Vestuário",
                                 "3.2.2": "Acessórios"
@@ -243,7 +242,8 @@
                 "4.5": { name: "Boxers" },
                 "4.6": { name: "Meias" },
                 "4.7": { name: "Polos" },
-                "4.8": { name: "T-shirts" }
+                "4.8": { name: "T-shirts" },
+                "4.9": { name: "Outro", camposAdicionais: ["Descrição"]  }
             }
         },
         "5": {
@@ -253,51 +253,122 @@
                 "5.2": { name: "Adidas" },
                 "5.3": { name: "New Balance" },
                 "5.4": { name: "Lacoste" },
-                "5.5": { name: "Outro" }
+                "5.5": { name: "Outro", camposAdicionais: ["Descrição"] }
             }
         },
         "6": {
             name: "Automóvel",
             subcategorias: {
-                "6.1": { name: "Abastecimento" },
-                "6.2": { name: "Portagens" },
-                "6.3": { name: "Seguro" },
-                "6.4": { name: "Estacionamento" },
-                "6.5": { name: "IUC" },
-                "6.6": { name: "Manutenção" },
-                "6.7": { name: "Peças" },
-                "6.8": { name: "Pneus" },
-                "6.9": { name: "Avarias" },
-                "6.10": { name: "Multas" },
-                "6.11": { name: "Outro" }
+                "6.1": { name: "Abastecimento", camposAdicionais: ["Quilômetros Atuais", "Litros Abastecidos"],
+                subsubcategorias: {
+                                "6.1.1": "Ford Fiesta",
+                                "6.1.2": "Toyota Celica",
+                                "6.1.3": "Outro"
+                            }
+                 },
+                "6.2": { name: "Portagens",
+                subsubcategorias: {
+                                "6.1.1": "Ford Fiesta",
+                                "6.1.2": "Toyota Celica",
+                                "6.1.3": "Outro"
+                            }
+                 },
+                "6.3": { name: "Seguro",
+                subsubcategorias: {
+                                "6.1.1": "Ford Fiesta",
+                                "6.1.2": "Toyota Celica",
+                                "6.1.3": "Outro"
+                            }
+                 },
+                "6.4": { name: "Estacionamento",
+                subsubcategorias: {
+                                "6.1.1": "Ford Fiesta",
+                                "6.1.2": "Toyota Celica",
+                                "6.1.3": "Outro"
+                            }
+                 },
+                "6.5": { name: "IUC",
+                subsubcategorias: {
+                                "6.1.1": "Ford Fiesta",
+                                "6.1.2": "Toyota Celica",
+                                "6.1.3": "Outro"
+                            }
+                 },
+                "6.6": { name: "Manutenção",camposAdicionais: ["Descrição"],
+                subsubcategorias: {
+                                "6.1.1": "Ford Fiesta",
+                                "6.1.2": "Toyota Celica",
+                                "6.1.3": "Outro"
+                            }
+                 },
+                "6.7": { name: "Peças", camposAdicionais: ["Descrição"],
+                subsubcategorias: {
+                                "6.1.1": "Ford Fiesta",
+                                "6.1.2": "Toyota Celica",
+                                "6.1.3": "Outro"
+                            }
+                 },
+                "6.8": { name: "Pneus", camposAdicionais: ["Quilômetros Atuais", "Descrição"],
+                subsubcategorias: {
+                                "6.1.1": "Ford Fiesta",
+                                "6.1.2": "Toyota Celica",
+                                "6.1.3": "Outro"
+                            }
+                 },
+                "6.9": { name: "Avarias", camposAdicionais: ["Descrição"],
+                subsubcategorias: {
+                                "6.1.1": "Ford Fiesta",
+                                "6.1.2": "Toyota Celica",
+                                "6.1.3": "Outro"
+                            }
+                 },
+                "6.10": { name: "Multas", camposAdicionais: ["Descrição"],
+                subsubcategorias: {
+                                "6.1.1": "Ford Fiesta",
+                                "6.1.2": "Toyota Celica",
+                                "6.1.3": "Outro"
+                            }
+                 },
+                "6.11": { name: "Outro", camposAdicionais: ["Descrição"],
+                subsubcategorias: {
+                                "6.1.1": "Ford Fiesta",
+                                "6.1.2": "Toyota Celica",
+                                "6.1.3": "Outro"
+                            }
+                 }
             }
         },
-        "7": {
-            name: "Casa",
+        "7": {name: "Casa", 
             subcategorias: {
-                "7.1": { name: "Renda" },
-                "7.2": { name: "Despesas Gerais" }
+                "7.1": { name: "Renda", camposAdicionais: ["Descrição"]},
+                "7.2": { name: "Despesas Gerais", camposAdicionais: ["Descrição"]}
             }
         },
         "8": {
-            name: "Lazer",
+            name: "Lazer", 
             subcategorias: {
-                "8.1": { name: "Café/Bar" },
-                "8.2": { name: "Cinema" },
-                "8.3": { name: "Karts" }
+                "8.1": { name: "Café/Bar", camposAdicionais: ["Descrição"] },
+                "8.2": { name: "Cinema", camposAdicionais: ["Descrição"] },
+                "8.3": { name: "Karts", camposAdicionais: ["Descrição"] }
             }
         },
         "9": {
-            name: "Cuidados Pessoais",
+            name: "Cuidados Pessoais", 
             subcategorias: {
-                "9.1": { name: "Cabeleireiro" },
-                "9.2": { name: "Depilação" },
-                "9.3": { name: "Perfumes" }
+                "9.1": { name: "Cabeleireiro", camposAdicionais: ["Descrição"]  },
+                "9.2": { name: "Depilação", camposAdicionais: ["Descrição"]  },
+                "9.3": { name: "Perfumes", camposAdicionais: ["Descrição"]  }
             }
         },
         "10": {
-            name: "Eletrônica",
-            subcategorias: {}
+            name: "Eletrônica e tecnologia",
+            subcategorias: {
+                "10.1": { name: "Computador", camposAdicionais: ["Descrição"]  },
+                "10.2": { name: "Telemóvel", camposAdicionais: ["Descrição"]  },
+                "10.3": { name: "Eletrodoméstico", camposAdicionais: ["Descrição"]  },
+                "10.4": { name: "3D Printing", camposAdicionais: ["Descrição"]  },
+                "10.5": { name: "Outro", camposAdicionais: ["Descrição"]  }
+            }
         }
             }
         };
@@ -365,7 +436,7 @@
                 opcoesAdicionais.innerHTML += `
                     <div class="form-group">
                         <label for="${campo}">${campo}</label>
-                        <input type="text" id="${campo}" name="${campo}" placeholder="Digite o valor">
+                        <input type="text" id="${campo}" name="${campo}" placeholder="Preencha este campo...">
                     </div>
                 `;
             });
