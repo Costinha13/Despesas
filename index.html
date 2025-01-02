@@ -326,6 +326,52 @@
         document.addEventListener("DOMContentLoaded", function () {
             preencherCategorias();
         });
+        document.getElementById("gastosForm").addEventListener("submit", function (event) {
+    event.preventDefault(); // Evita o reload da página ao submeter o formulário
+
+    const data = document.getElementById("data").value;
+    const categoria = document.getElementById("categoria").value;
+    const subcategoria = document.getElementById("subcategoria").value;
+
+    // Sub-subcategoria (botão selecionado)
+    const subsubcategoriaBtn = document.querySelector(".subsubcategoria-btn.selected");
+    const subsubcategoria = subsubcategoriaBtn ? subsubcategoriaBtn.textContent : "";
+
+    // Campos adicionais (pegar valores preenchidos)
+    const camposAdicionais = {};
+    const camposAdicionaisInputs = document.querySelectorAll("#opcoesAdicionais input");
+    camposAdicionaisInputs.forEach(input => {
+        camposAdicionais[input.name] = input.value || "";
+    });
+
+    // Valor
+    const valor = document.getElementById("valor").value;
+
+    // Montar os dados para envio
+    const dados = {
+        Data: data,
+        Categoria: categoria,
+        Subcategoria: subcategoria,
+        Subsubcategoria: subsubcategoria,
+        Valor: valor,
+        ...camposAdicionais // Adiciona cada campo adicional separadamente
+    };
+
+    // Enviar dados ao Google Apps Script
+    fetch("https://script.google.com/macros/s/AKfycbzvqVd0nFutoxcCR7ygwZ3XLops2IAwaTVkoSfFt7BMf2-JwYBGQLjzuWJ9sKReTbgEVg/exec", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: new URLSearchParams(dados).toString()
+    })
+    .then(response => response.text())
+    .then(result => {
+        console.log(result);
+        document.getElementById("successMessage").style.display = "block";
+    })
+    .catch(error => console.error("Erro:", error));
+});
     </script>
 </body>
 </html>
